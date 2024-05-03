@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+/* body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+} */
+
+/* tailwind body css */
+body {
+  /* color: rgb(var(--foreground-rgb)); */
+  @apply bg-gradient-to-r from-slate-500 to-slate-800 text-white;
+}
+
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.typewriter {
+  font-family: 'Courier New', Courier, monospace;
+  width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: .15em solid orange;
+  animation: typewriter 4s steps(40, end) 1s 1 normal both,
+             blink-caret .75s step-end infinite;
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: orange; }
+}
+
+/* Custom scrollbar styles */
+.response-container::-webkit-scrollbar {
+  width: 6px; /* scrollbar width */
+  background-color: transparent; /* scrollbar track color */
+}
+
+.response-container::-webkit-scrollbar-thumb {
+  background-color: #FFFFFF; /* scrollbar handle color */
+  border-radius: 6px;
+}
+
+/* Fixed size on large screens and scrollable content */
+@media (min-width: 1024px) { /* Tailwind's 'lg' breakpoint */
+  .response-container {
+      height: 487px; /* fixed height for large screens */
+  }
+}
+
+/* Custom scrollbar styles for elements with the 'custom-scrollbar' class */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px; /* Narrow width for the scrollbar */
+  background-color: transparent; /* Transparent track */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #FFFFFF; /* White thumb for visibility */
+  border-radius: 6px; /* Rounded corners for the thumb */
+  cursor: auto;
+}
+
+/* Apply dark mode custom scrollbar if needed */
+.custom-scrollbar.dark::-webkit-scrollbar-thumb {
+  background-color: #BBBBBB; /* Slightly darker thumb for dark mode */
+}
