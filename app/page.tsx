@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-around p-6 max-w-full gap-4">
       <div className="flex flex-row items-center justify-around z-10 w-full max-w-5xl font-mono text-sm lg:flex gap-2">
-        <p className="flex justify-center border-b border-gray-300 bg-gradient-to-r from-slate-900 to-slate-700 backdrop-blur-2xl font-bold text-base dark:border-neutral-800 lg:static lg:w-auto rounded-xl lg:border p-4">
+        <p className="flex justify-center border-b border-gray-300 bg-gradient-to-r from-slate-900 to-slate-700 backdrop-blur-2xl font-bold text-xl dark:border-neutral-800 lg:static lg:w-auto rounded-xl lg:border p-3">
           LLM Harms
           {/* &nbsp; */}
           {/* <Link href="https://debdonig.com/professional/">

@@ -9,6 +9,7 @@ export default function ChatComponent() {
     const [context, setContext] = useState('');
     const [prompt, setPrompt] = useState('');
     const [response, setResponse] = useState('');
+    const [llm, setLlm] = useState('gpt-3');
     const [isLoading, setIsLoading] = useState(false);
     const [hasQueried, setHasQueried] = useState(false);
     const handleSubmit = async () => {
@@ -29,7 +30,7 @@ export default function ChatComponent() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ context, prompt }),
+                body: JSON.stringify({ context, prompt, llm }),
             });
             const data = await res.json();
             setResponse(data.response);
@@ -68,14 +69,30 @@ export default function ChatComponent() {
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
                 />
+                <div className="flex flex-row w-full gap-4">
+                    {/* a dropdown to select the llm to be used to generate response */}
+                    <div className='w-1/2'>
+                        <h3 className="text-lg font-bold text-black dark:text-white">Choose LLM</h3>
+                        <select
+                            className="p-2 w-full border border-gray-300 dark:border-gray-700 text-gray-700 rounded-md shadow bg-white dark:bg-gray-700 dark:text-white"
+                            onChange={(e) => setLlm(e.target.value)}
+                            value={llm}
+                        >
+                            <option value="gpt-3">GPT-3</option>
+                            <option value="davinci">Davinci</option>
+                            <option value="curie">Curie</option>
+                            <option value="babbage">Babbage</option>
+                        </select>
+                    </div>
+                    <button
+                        className="p-2 bg-blue-500 w-1/2 text-white font-bold rounded hover:bg-blue-600 shadow-lg disabled:bg-blue-300 disabled:cursor-not-allowed"
+                        onClick={handleSubmit}
+                        disabled={isLoading}
+                    >
+                        Submit
+                    </button>
+                </div>
 
-                <button
-                    className="p-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-600 shadow-lg disabled:bg-blue-300 disabled:cursor-not-allowed"
-                    onClick={handleSubmit}
-                    disabled={isLoading}
-                >
-                    Submit
-                </button>
             </div>
 
             <div className="flex items-center justify-center w-full lg:w-1/2 h-full p-4 relative">

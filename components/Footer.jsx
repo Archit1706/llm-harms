@@ -1,5 +1,4 @@
-// components/Footer.js
-
+import React from "react";
 import Link from "next/link";
 
 const Footer = () => {
@@ -15,11 +14,9 @@ const Footer = () => {
             <div className="max-w-screen-xl mx-auto flex flex-wrap items-center justify-center text-white text-sm sm:text-base">
                 Team Members:
                 {teamMembers.map((member, index) => (
-                    <div key={index} className="px-4 py-2">
+                    <div key={index} className="px-4 py-2" title={member.role} >
                         <Link href={member.linkedInUrl} target="_blank" rel="noopener noreferrer" className="hover:underline">
-
                             {member.name}
-
                         </Link>
                     </div>
                 ))}
