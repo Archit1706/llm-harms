@@ -2,15 +2,24 @@
 import { useState } from 'react';
 import Loader from './Loader';
 import Image from 'next/image';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ChatComponent() {
     const [context, setContext] = useState('');
     const [prompt, setPrompt] = useState('');
     const [response, setResponse] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [hasQueried, setHasQueried] = useState(false); // New state to track if the API has been queried
-
+    const [hasQueried, setHasQueried] = useState(false);
     const handleSubmit = async () => {
+        if (!context) {
+            toast.error('Please enter context');
+            return;
+        }
+        if (!prompt) {
+            toast.error('Please enter prompt');
+            return;
+        }
         setHasQueried(true);
         setIsLoading(true);
         const res = await fetch('/api/chat', {
@@ -23,6 +32,7 @@ export default function ChatComponent() {
         const data = await res.json();
         setResponse(data.response);
         setIsLoading(false);
+        toast.success('Response generated successfully');
     };
 
     return (
