@@ -32,26 +32,6 @@ body {
   @apply bg-gradient-to-r from-slate-500 to-slate-800 text-white;
 }
 
-@keyframes typewriter {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-.typewriter {
-  font-family: 'Courier New', Courier, monospace;
-  width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  border-right: .15em solid orange;
-  animation: typewriter 4s steps(40, end) 1s 1 normal both,
-             blink-caret .75s step-end infinite;
-}
-
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: orange; }
-}
-
 /* Custom scrollbar styles */
 .response-container::-webkit-scrollbar {
   width: 6px; /* scrollbar width */
@@ -66,7 +46,7 @@ body {
 /* Fixed size on large screens and scrollable content */
 @media (min-width: 1024px) { /* Tailwind's 'lg' breakpoint */
   .response-container {
-      height: 487px; /* fixed height for large screens */
+      height: 500px; /* fixed height for large screens */
   }
 }
 

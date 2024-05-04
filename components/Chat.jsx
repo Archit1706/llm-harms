@@ -65,11 +65,11 @@ export default function ChatComponent() {
 
             <div className="flex items-center justify-center w-full lg:w-1/2 h-full p-4 relative">
                 {hasQueried ? (
-                    <div className="response-container max-h-full w-full overflow-auto">
+                    <div className=" max-h-full w-full">
                         <h3 className="text-lg font-bold text-black dark:text-white mb-4">LLM Response</h3>
-                        <p className="text-black dark:text-white break-words">
+                        <div className="response-container text-black w-full dark:text-white break-words overflow-auto">
                             {isLoading ? <Loader /> : response}
-                        </p>
+                        </div>
                     </div>
                 ) : (
                     <Image height={400} width={400} src="/chat.png" alt="Chat Image" className='w-fit' priority />
