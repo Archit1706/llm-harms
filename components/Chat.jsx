@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Loader from './Loader';
 import Image from 'next/image';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function ChatComponent() {
@@ -12,31 +12,46 @@ export default function ChatComponent() {
     const [isLoading, setIsLoading] = useState(false);
     const [hasQueried, setHasQueried] = useState(false);
     const handleSubmit = async () => {
-        if (!context) {
+        if (!context && !prompt) {
+            toast.error('Please enter context and prompt');
+        }
+        else if (context == '') {
             toast.error('Please enter context');
-            return;
         }
-        if (!prompt) {
+        else if (prompt == '') {
             toast.error('Please enter prompt');
-            return;
         }
-        setHasQueried(true);
-        setIsLoading(true);
-        const res = await fetch('/api/chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ context, prompt }),
-        });
-        const data = await res.json();
-        setResponse(data.response);
-        setIsLoading(false);
-        toast.success('Response generated successfully');
+        else {
+            setHasQueried(true);
+            setIsLoading(true);
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ context, prompt }),
+            });
+            const data = await res.json();
+            setResponse(data.response);
+            setIsLoading(false);
+            toast.success('Response generated successfully');
+        }
     };
 
     return (
         <div className="flex flex-col lg:flex-row w-full h-full bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm shadow-gray-300">
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
             <div className="flex flex-col w-full lg:w-1/2 p-4 space-y-4">
                 <h3 className="text-lg font-bold text-black dark:text-white">Context History</h3>
                 <textarea
@@ -72,7 +87,7 @@ export default function ChatComponent() {
                         </div>
                     </div>
                 ) : (
-                    <Image height={400} width={400} src="/chat.png" alt="Chat Image" className='w-fit' priority />
+                    <Image height={400} width={400} src="/chat.png" alt="Chat Image" className='w-fit h-auto aspect-square' priority />
                 )}
             </div>
         </div>
