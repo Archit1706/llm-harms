@@ -25,8 +25,8 @@ export default function ChatComponent() {
         else {
             setHasQueried(true);
             setIsLoading(true);
-            const url = 'http://127.0.0.1:8000/chat/';
-            // const url = 'https://energetic-noel-brandinnerworld-1bd11fc4.koyeb.app/chat/';
+            // const url = 'http://127.0.0.1:8000/chat/';
+            const url = 'https://energetic-noel-brandinnerworld-1bd11fc4.koyeb.app/chat/';
             const res = await fetch(url, {
                 method: 'POST',
                 headers: {
