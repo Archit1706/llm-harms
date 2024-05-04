@@ -1,39 +1,52 @@
-from fastapi import FastAPI
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import Optional
-import time
+from fastapi.middleware.cors import CORSMiddleware
+
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+from langchain_community.llms import Together
 
 app = FastAPI()
 
-
-@app.get("/api/python")
-def hello_world():
-    return {"message": "Hello World"}
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class ChatRequest(BaseModel):
-    context: Optional[str] = None
-    prompt: str
+    llm_name: str
+    template: str
+    message: str
 
 
-@app.post("/api/chat")
-async def chat(request: ChatRequest):
-    if not request.prompt:
-        raise HTTPException(status_code=400, detail="Prompt is required")
-
-    response_text = generate_response(request.context, request.prompt)
-    time.sleep(2)
-    return {"response": response_text}
-
-
-def generate_response(context: Optional[str], prompt: str) -> str:
-    response = f"Received context: {context} and prompt: {prompt}"
-    # use llm model here to generate response
-    return response
+def create_model(llm_name):
+    return Together(
+        model=llm_name,
+        temperature=0.4,
+        max_tokens=1024,
+        top_k=50,
+        together_api_key="api_key",
+    )
 
 
-if __name__ == "__main__":
-    import uvicorn
+def process_template_and_message(model, template, message):
+    prompt = ChatPromptTemplate.from_template(template)
+    chain = {"message": RunnablePassthrough()} | prompt | model | StrOutputParser()
+    output = chain.invoke(message)
+    return output
 
-    uvicorn.run(app, host="localhost", port=8000)
+
+@app.post("/chat/")
+async def chat_with_llm(request: ChatRequest):
+    if not request.llm_name or not request.template or not request.message:
+        raise HTTPException(
+            status_code=400, detail="Missing one or more required fields."
+        )
+    model = create_model(request.llm_name)
+    output = process_template_and_message(model, request.template, request.message)
+    return {"responses": output}

@@ -6,34 +6,36 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function ChatComponent() {
-    const [context, setContext] = useState('');
-    const [prompt, setPrompt] = useState('');
+    const [message, setMessage] = useState('');
+    const [template, setTemplate] = useState('');
     const [response, setResponse] = useState('');
-    const [llm, setLlm] = useState('gpt-3');
+    const [llm, setLlm] = useState('mistralai/Mistral-7B-Instruct-v0.2');
     const [isLoading, setIsLoading] = useState(false);
     const [hasQueried, setHasQueried] = useState(false);
     const handleSubmit = async () => {
-        if (!context && !prompt) {
-            toast.error('Please enter context and prompt');
+        if (!message && !template) {
+            toast.error('Please enter message history and template prompt!');
         }
-        else if (context == '') {
-            toast.error('Please enter context');
+        else if (message == '') {
+            toast.error('Please enter message history!');
         }
-        else if (prompt == '') {
-            toast.error('Please enter prompt');
+        else if (template == '') {
+            toast.error('Please enter template prompt!');
         }
         else {
             setHasQueried(true);
             setIsLoading(true);
-            const res = await fetch('/api/chat', {
+            const url = 'http://127.0.0.1:8000/chat/';
+            // const url = 'https://energetic-noel-brandinnerworld-1bd11fc4.koyeb.app/chat/';
+            const res = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ context, prompt, llm }),
+                body: JSON.stringify({ 'message': message, 'template': template, 'llm_name': llm }),
             });
             const data = await res.json();
-            setResponse(data.response);
+            setResponse(data.responses);
             setIsLoading(false);
             toast.success('Response generated successfully');
         }
@@ -54,20 +56,20 @@ export default function ChatComponent() {
                 theme="dark"
             />
             <div className="flex flex-col w-full lg:w-1/2 p-4 space-y-4">
-                <h3 className="text-lg font-bold text-black dark:text-white">Context History</h3>
+                <h3 className="text-lg font-bold text-black dark:text-white">Message History</h3>
                 <textarea
                     className="custom-scrollbar w-full h-48 p-2 border text-gray-700 border-gray-300 dark:border-gray-700 rounded-md shadow bg-white dark:bg-gray-700 dark:text-white overflow-auto"
                     placeholder="Previous chats for context"
-                    value={context}
-                    onChange={(e) => setContext(e.target.value)}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                 />
 
-                <h3 className="text-lg font-bold text-black dark:text-white">Your Prompt</h3>
+                <h3 className="text-lg font-bold text-black dark:text-white">Your Template Prompt</h3>
                 <textarea
                     className="custom-scrollbar w-full h-48 p-2 border border-gray-300 text-gray-700 dark:border-gray-700 rounded-md shadow bg-white dark:bg-gray-700 dark:text-white overflow-auto"
-                    placeholder="Enter your prompt"
-                    value={prompt}
-                    onChange={(e) => setPrompt(e.target.value)}
+                    placeholder="Enter your template prompt"
+                    value={template}
+                    onChange={(e) => setTemplate(e.target.value)}
                 />
                 <div className="flex flex-row w-full gap-4">
                     {/* a dropdown to select the llm to be used to generate response */}
@@ -78,10 +80,12 @@ export default function ChatComponent() {
                             onChange={(e) => setLlm(e.target.value)}
                             value={llm}
                         >
-                            <option value="gpt-3">GPT-3</option>
-                            <option value="davinci">Davinci</option>
-                            <option value="curie">Curie</option>
-                            <option value="babbage">Babbage</option>
+                            <option value='mistralai/Mistral-7B-Instruct-v0.2'>Mistral-7B-Instruct-v0.2</option>
+                            <option value='mistralai/Mixtral-8x7B-Instruct-v0.1'>Mixtral-8x7B-Instruct-v0.1</option>
+                            <option value='mistralai/Mixtral-8x22B-Instruct-v0.1'>Mixtral-8x22B-Instruct-v0.1</option>
+                            {/* <option value='google/gemma-7b-it'>Gemma-7B-IT</option> */}
+                            <option value='Qwen/Qwen1.5-32B-Chat'>Qwen1.5-32B-Chat</option>
+                            {/* <option value='upstage/SOLAR-10.7B-Instruct-v1.0'>SOLAR-10.7B-Instruct-v1.0</option> */}
                         </select>
                     </div>
                     <button
