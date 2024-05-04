@@ -30,7 +30,7 @@ export default function ChatComponent() {
             <div className="flex flex-col w-full lg:w-1/2 p-4 space-y-4">
                 <h3 className="text-lg font-bold text-black dark:text-white">Context History</h3>
                 <textarea
-                    className="custom-scrollbar w-full h-48 p-2 border border-gray-300 dark:border-gray-700 rounded-md shadow bg-white dark:bg-gray-700 dark:text-white overflow-auto"
+                    className="custom-scrollbar w-full h-48 p-2 border text-gray-700 border-gray-300 dark:border-gray-700 rounded-md shadow bg-white dark:bg-gray-700 dark:text-white overflow-auto"
                     placeholder="Previous chats for context"
                     value={context}
                     onChange={(e) => setContext(e.target.value)}
@@ -38,7 +38,7 @@ export default function ChatComponent() {
 
                 <h3 className="text-lg font-bold text-black dark:text-white">Your Prompt</h3>
                 <textarea
-                    className="custom-scrollbar w-full h-48 p-2 border border-gray-300 dark:border-gray-700 rounded-md shadow bg-white dark:bg-gray-700 dark:text-white overflow-auto"
+                    className="custom-scrollbar w-full h-48 p-2 border border-gray-300 text-gray-700 dark:border-gray-700 rounded-md shadow bg-white dark:bg-gray-700 dark:text-white overflow-auto"
                     placeholder="Enter your prompt"
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
