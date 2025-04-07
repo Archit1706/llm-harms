@@ -1,78 +1,110 @@
-<p align="center">
-  <a href="https://nextjs-fastapi-starter.vercel.app/">
-    <img src="https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png" height="96">
-    <h3 align="center">Next.js FastAPI Starter</h3>
-  </a>
-</p>
+# LLM Harms Analysis Platform
 
-<p align="center">Simple Next.js boilerplate that uses <a href="https://fastapi.tiangolo.com/">FastAPI</a> as the API backend.</p>
+This repository contains the source code for the **LLM Harms Analysis Platform**, a web application that evaluates the impact of large language models (LLMs) on the propagation of harmful speech in online forums. The platform allows users to compare LLM-generated content against real-world forum messages, analyzing attributes like toxicity, identity attacks, and extremism.
 
-<br/>
+### Live Demo
+[LLM Harms Analysis Platform](https://llm-harms.vercel.app/)
 
-## Introduction
+---
 
-This is a hybrid Next.js + Python app that uses Next.js as the frontend and FastAPI as the API backend. One great use case of this is to write Next.js apps that use Python AI libraries on the backend.
+## Table of Contents
 
-## How It Works
+* [Overview](#overview)
+* [Features](#features)
+* [Tech Stack](#tech-stack)
+* [License](#license)
 
-The Python/FastAPI server is mapped into to Next.js app under `/api/`.
+---
 
-This is implemented using [`next.config.js` rewrites](https://github.com/digitros/nextjs-fastapi/blob/main/next.config.js) to map any request to `/api/:path*` to the FastAPI API, which is hosted in the `/api` folder.
+## Overview
 
-On localhost, the rewrite will be made to the `127.0.0.1:8000` port, which is where the FastAPI server is running.
+The **LLM Harms Analysis Platform** allows users to:
+* Compare original forum messages with LLM-generated responses based on key attributes such as **toxicity**, **identity attack**, **threat**, and **profanity**.
+* Experiment with different prompts (neutral, context-sensitive, and escalating) to understand how LLMs can respond to real-world hate speech.
+* Visualize comparative scores to understand how LLM-generated content amplifies or mitigates harmful speech.
 
-In production, the FastAPI server is hosted as [Python serverless functions](https://vercel.com/docs/concepts/functions/serverless-functions/runtimes/python) on Vercel.
+This platform analyzes the outputs of multiple LLMs, including **Mistral-7B**, **Mixtral**, **Gemma-7B**, and **Qwen-1.5**, among others.
 
-## Demo
+---
 
-https://nextjs-fastapi-starter.vercel.app/
+## Features
 
-## Deploy Your Own
+* **Toxicity Analysis**: Compare original and LLM-generated messages based on Perspective API scoring attributes.
+* **Prompt Engineering**: Test different prompt types (neutral, context-sensitive, and escalating) to see how they affect LLM behavior.
+* **LLM Support**: Multiple models, including open-source LLMs, are integrated for diverse experimentation.
 
-You can clone & deploy it to Vercel with one click:
+---
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fdigitros%2Fnextjs-fastapi%2Ftree%2Fmain)
+## Tech Stack
 
-## Developing Locally
+### Frontend:
+* **Next.js**: A React-based framework for server-side rendering and static site generation.
+* **Tailwind CSS**: A utility-first CSS framework for building responsive and modern UI components.
 
-You can clone & create this repo with the following command
+### Backend:
+* **FastAPI**: A modern, fast (high-performance) web framework for building APIs with Python 3.7+ based on standard Python type hints.
+* **Together AI**: The ML backend that provides the LLM models for generating responses.
 
-```bash
-npx create-next-app nextjs-fastapi --example "https://github.com/digitros/nextjs-fastapi"
-```
+### Deployment:
+* **Vercel**: Frontend deployment for Next.js.
+* **Koyeb**: Backend deployment for FastAPI services.
 
-## Getting Started
+---
 
-First, install the dependencies:
+## Frontend Setup
 
-```bash
-npm install
-# or
-yarn
-# or
-pnpm install
-```
+1. **Install Dependencies:**
 
-Then, run the development server:
+   Navigate to the `frontend` directory and install the required dependencies using `npm`:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+   ```bash
+   cd frontend
+   npm install
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Configure Environment Variables:**
 
-The FastApi server will be running on [http://127.0.0.1:8000](http://127.0.0.1:8000) – feel free to change the port in `package.json` (you'll also need to update it in `next.config.js`).
+   Create a `.env.local` file in the `frontend` directory and add the necessary API keys and configurations (e.g., for Vercel deployment, external services, etc.).
 
-## Learn More
+3. **Run Locally:**
 
-To learn more about Next.js, take a look at the following resources:
+   Start the Next.js development server:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [FastAPI Documentation](https://fastapi.tiangolo.com/) - learn about FastAPI features and API.
+   ```bash
+   npm run dev
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+   The application will be running on `http://localhost:3000`.
+
+---
+
+## Backend Setup
+
+1. **Install Dependencies:**
+
+   Navigate to the `backend` directory and install the dependencies using `pip`:
+
+   ```bash
+   cd backend
+   pip install -r requirements.txt
+   ```
+
+2. **Run the Backend Locally:**
+
+   Start the FastAPI server locally:
+
+   ```bash
+   uvicorn api.main:app --reload
+   ```
+
+   The API will be running on `http://localhost:8000`.
+
+3. **Set Up ML Models:**
+
+   Ensure the required models are set up with **Together AI** or your preferred backend for LLM inference. Update the `backend/models` configuration files to point to the appropriate models.
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
